@@ -1,4 +1,4 @@
-package daemon
+package cmd
 
 import (
     "log"
@@ -7,9 +7,9 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/paxapy/boats/db"
-    "github.com/paxapy/boats/model"
-    "github.com/paxapy/boats/api"
+    "github.com/paxapy/goods/api"
+    "github.com/paxapy/goods/internal/db"
+    "github.com/paxapy/goods/internal/model"
 )
 
 type Config struct {

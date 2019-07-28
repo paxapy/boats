@@ -3,9 +3,10 @@ package db
 import (
     "database/sql"
 
-    "github.com/paxapy/boats/model"
     "github.com/jmoiron/sqlx"
     _ "github.com/lib/pq"
+
+    "github.com/paxapy/goods/internal/model"
 )
 
 const boat = "boat"

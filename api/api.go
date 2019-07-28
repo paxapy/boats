@@ -3,11 +3,31 @@ package api
 import (
     "fmt"
     "log"
+    "net"
+    "time"
     "net/http"
     "encoding/json"
 
-    "github.com/paxapy/boats/model"
+    "github.com/paxapy/goods/internal/model"
 )
+
+
+type Config struct {
+    Media http.FileSystem
+}
+
+func Start(cfg Config, m *model.Model, listener net.Listener) {
+
+    server := &http.Server{
+        ReadTimeout:    60 * time.Second,
+        WriteTimeout:   60 * time.Second,
+        MaxHeaderBytes: 1 << 16}
+
+    http.Handle("/media/", http.FileServer(cfg.Media))
+    http.Handle("/api/goods/", boatsHandler(m))
+
+    go server.Serve(listener)
+}
 
 func listHandler(list interface{}, err error) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

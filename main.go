@@ -5,13 +5,13 @@ import (
     "log"
     "net/http"
 
-    "github.com/paxapy/boats/daemon"
+    "github.com/paxapy/goods/cmd"
 )
 
-var assetsPath string
+var mediaPath string
 
-func processFlags() *daemon.Config {
-    cfg := &daemon.Config{}
+func processFlags() *cmd.Config {
+    cfg := &cmd.Config{}
 
     flag.StringVar(&cfg.ListenSpec, "listen", "localhost:4200", "HTTP listen spec")
     flag.StringVar(
@@ -19,23 +19,23 @@ func processFlags() *daemon.Config {
       "db-connect",
       "host=/var/run/postgresql user=boats dbname=boats sslmode=disable",
       "DB Connect String")
-    flag.StringVar(&assetsPath, "assets-path", "assets", "Path to assets dir")
+    flag.StringVar(&mediaPath, "media-path", "media", "Path to media dir")
 
     flag.Parse()
     return cfg
 }
 
-func setupHttpAssets(cfg *daemon.Config) {
-    log.Printf("Assets served from %q.", assetsPath)
-    cfg.Api.Assets = http.Dir(assetsPath)
+func setupHttpMedia(cfg *cmd.Config) {
+    log.Printf("Media served from %q.", mediaPath)
+    cfg.Api.Media = http.Dir(mediaPath)
 }
 
 func main() {
     cfg := processFlags()
 
-    setupHttpAssets(cfg)
+    setupHttpMedia(cfg)
 
-    if err := daemon.Run(cfg); err != nil {
+    if err := cmd.Run(cfg); err != nil {
         log.Printf("Error in main(): %v", err)
     }
 }
