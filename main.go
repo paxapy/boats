@@ -8,7 +8,7 @@ import (
     "github.com/paxapy/goods/cmd"
 )
 
-var mediaPath string
+var assetsPath string
 
 func processFlags() *cmd.Config {
     cfg := &cmd.Config{}
@@ -19,21 +19,21 @@ func processFlags() *cmd.Config {
       "db-connect",
       "host=/var/run/postgresql user=boats dbname=boats sslmode=disable",
       "DB Connect String")
-    flag.StringVar(&mediaPath, "media-path", "media", "Path to media dir")
+    flag.StringVar(&assetsPath, "assets-path", "assets", "Path to assets dir")
 
     flag.Parse()
     return cfg
 }
 
-func setupHttpMedia(cfg *cmd.Config) {
-    log.Printf("Media served from %q.", mediaPath)
-    cfg.Api.Media = http.Dir(mediaPath)
+func setupHttpAssets(cfg *cmd.Config) {
+    log.Printf("Assets served from %q.", assetsPath)
+    cfg.Api.Assets = http.Dir(assetsPath)
 }
 
 func main() {
     cfg := processFlags()
 
-    setupHttpMedia(cfg)
+    setupHttpAssets(cfg)
 
     if err := cmd.Run(cfg); err != nil {
         log.Printf("Error in main(): %v", err)
